@@ -386,27 +386,80 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Contact form handling
+// Contact form handling with EmailJS
 const contactForm = document.querySelector('.contact-form');
+
+// EmailJS configuration
+emailjs.init("YOUR_PUBLIC_KEY"); // EmailJS public key'inizi buraya ekleyin
 
 contactForm.addEventListener('submit', function(e) {
     e.preventDefault();
     
+    // Show loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Gönderiliyor...';
+    submitBtn.disabled = true;
+    
     // Get form data
     const formData = new FormData(this);
-    const formObject = {};
+    const templateParams = {
+        from_name: formData.get('name'),
+        from_email: formData.get('email'),
+        phone: formData.get('phone'),
+        subject: formData.get('subject'),
+        message: formData.get('message'),
+        to_name: 'LVT Elektrik Otomasyon',
+        reply_to: formData.get('email')
+    };
     
-    // Convert FormData to object
-    for (let [key, value] of formData.entries()) {
-        formObject[key] = value;
-    }
-    
-    // Show success message (in a real application, you would send this to a server)
-    showNotification('Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağız.', 'success');
-    
-    // Reset form
-    this.reset();
+    // Send email using EmailJS
+    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+        .then(function(response) {
+            console.log('Email sent successfully:', response);
+            showNotification('Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağız.', 'success');
+            contactForm.reset();
+        })
+        .catch(function(error) {
+            console.error('Email sending failed:', error);
+            
+            // Fallback: Create mailto link
+            const mailtoLink = createMailtoLink(templateParams);
+            
+            if (confirm('Email servisi şu anda kullanılamıyor. Email istemcinizi açmak ister misiniz?')) {
+                window.location.href = mailtoLink;
+                showNotification('Email istemciniz açıldı. Mesajınızı oradan gönderebilirsiniz.', 'info');
+            } else {
+                showNotification('Email gönderiminde bir hata oluştu. Lütfen daha sonra tekrar deneyin.', 'error');
+            }
+        })
+        .finally(function() {
+            // Restore button state
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        });
 });
+
+// Create mailto link as fallback
+function createMailtoLink(params) {
+    const email = 'info@lvtelektrik.com'; // Şirket email adresi
+    const subject = encodeURIComponent(`Website İletişim: ${params.subject}`);
+    const body = encodeURIComponent(`
+İsim: ${params.from_name}
+Email: ${params.from_email}
+Telefon: ${params.phone || 'Belirtilmemiş'}
+
+Konu: ${params.subject}
+
+Mesaj:
+${params.message}
+
+---
+Bu mesaj ${window.location.hostname} web sitesinden gönderilmiştir.
+    `);
+    
+    return `mailto:${email}?subject=${subject}&body=${body}`;
+}
 
 // Notification system
 function showNotification(message, type = 'info') {
@@ -419,20 +472,29 @@ function showNotification(message, type = 'info') {
     // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
+    
+    let iconClass = 'info-circle';
+    if (type === 'success') iconClass = 'check-circle';
+    else if (type === 'error') iconClass = 'exclamation-circle';
+    
     notification.innerHTML = `
         <div class="notification-content">
-            <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+            <i class="fas fa-${iconClass}"></i>
             <span>${message}</span>
             <button class="notification-close">&times;</button>
         </div>
     `;
     
     // Add styles
+    let bgColor = '#007bff';
+    if (type === 'success') bgColor = '#28a745';
+    else if (type === 'error') bgColor = '#dc3545';
+    
     notification.style.cssText = `
         position: fixed;
         top: 100px;
         right: 20px;
-        background: ${type === 'success' ? '#28a745' : '#007bff'};
+        background: ${bgColor};
         color: white;
         padding: 15px 20px;
         border-radius: 10px;
@@ -824,79 +886,107 @@ class InstagramAPI {
         // Instagram Basic Display API yapılandırması
         this.accessToken = null;
         this.userId = null;
-        this.instagramUsername = 'lvtelektrikotomasyon';
+        this.instagramUsername = 'lvt_eom';
         
         // Demo veriler (gerçek API bağlantısı kurulana kadar)
         this.demoData = {
             profile: {
-                username: 'lvtelektrikotomasyon',
+                username: 'lvt_eom',
                 name: 'LVT Elektrik Otomasyon',
-                bio: '⚡ Elektrik & Otomasyon Uzmanı\n🔌 SCADA & PLC Çözümleri\n🏭 Endüstriyel Sistemler',
-                followers: 1250,
-                following: 180,
-                posts: 95,
-                profilePicture: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiByeD0iNjAiIGZpbGw9IiNFMTE5Njgi/+PC9yZWN0Pgo8dGV4dCB4PSI2MCIgeT0iNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5MVlQ8L3RleHQ+Cjwvc3ZnPgo='
+                bio: '⚡ Elektrik & Otomasyon Uzmanı\n🔌 SCADA & PLC Çözümleri\n🏭 Endüstriyel Sistemler\n📍 Türkiye',
+                followers: 1547,
+                following: 234,
+                posts: 127,
+                profilePicture: 'images/logo.png'
             },
             posts: [
                 {
                     id: '1',
-                    media_url: null,
-                    caption: 'Yeni SCADA projemiz tamamlandı! 🏭⚡',
-                    like_count: 67,
-                    comments_count: 12,
-                    timestamp: '2024-03-15T10:30:00Z',
+                    media_url: 'images/1.png',
+                    caption: '🏭 Yeni SCADA projemiz başarıyla tamamlandı! Endüstri 4.0 teknolojileri ile modern otomasyon çözümleri. #scada #otomasyon #endüstri40',
+                    like_count: 127,
+                    comments_count: 18,
+                    timestamp: '2024-10-09T10:30:00Z',
                     media_type: 'IMAGE',
-                    icon: 'fas fa-microchip'
+                    icon: 'fas fa-microchip',
+                    description: 'SCADA Proje'
                 },
                 {
                     id: '2',
-                    media_url: null,
-                    caption: 'PLC programlama eğitimi başladı! 💻',
-                    like_count: 89,
-                    comments_count: 15,
-                    timestamp: '2024-03-12T14:20:00Z',
+                    media_url: 'images/2.png',
+                    caption: '⚡ Hidroelektrik santral bakım ve modernizasyon çalışmaları devam ediyor. Güvenli enerji üretimi için kaliteli hizmet! #hidroelektrik #enerji #bakım',
+                    like_count: 198,
+                    comments_count: 24,
+                    timestamp: '2024-10-07T14:20:00Z',
                     media_type: 'IMAGE',
-                    icon: 'fas fa-bolt'
+                    icon: 'fas fa-bolt',
+                    description: 'Hidroelektrik Bakım'
                 },
                 {
                     id: '3',
-                    media_url: null,
-                    caption: 'Hidroelektrik santral bakım çalışmaları ⚡🔧',
-                    like_count: 124,
-                    comments_count: 23,
-                    timestamp: '2024-03-10T09:15:00Z',
+                    media_url: 'images/3.jpg',
+                    caption: '🔧 PLC programlama ve sistem entegrasyonu çalışmaları. Yüksek teknoloji, güvenilir çözümler. #plc #programlama #otomasyon',
+                    like_count: 89,
+                    comments_count: 12,
+                    timestamp: '2024-10-05T09:15:00Z',
                     media_type: 'IMAGE',
-                    icon: 'fas fa-cogs'
+                    icon: 'fas fa-cogs',
+                    description: 'PLC Programlama'
                 },
                 {
                     id: '4',
-                    media_url: null,
-                    caption: 'Yeni ekipman teslimatı! 📦⚡',
-                    like_count: 45,
-                    comments_count: 8,
-                    timestamp: '2024-03-08T16:45:00Z',
+                    media_url: 'images/4.jpg',
+                    caption: '🏗️ Endüstriyel tesis elektrik altyapı çalışmaları. Profesyonel ekip, kaliteli malzemeler, zamanında teslimat! #elektrik #endüstri #altyapı',
+                    like_count: 156,
+                    comments_count: 31,
+                    timestamp: '2024-10-03T16:45:00Z',
                     media_type: 'IMAGE',
-                    icon: 'fas fa-tools'
+                    icon: 'fas fa-industry',
+                    description: 'Endüstriyel Elektrik'
                 },
                 {
                     id: '5',
-                    media_url: null,
-                    caption: 'Elektrik panosu montaj çalışması 🔌',
+                    media_url: 'images/5.png',
+                    caption: '💻 Yazılım geliştirme ve SCADA entegrasyonu. Modern teknolojiler ile akıllı sistemler. #yazılım #scada #teknoloji',
                     like_count: 78,
-                    comments_count: 11,
-                    timestamp: '2024-03-06T11:30:00Z',
+                    comments_count: 15,
+                    timestamp: '2024-10-01T11:30:00Z',
                     media_type: 'IMAGE',
-                    icon: 'fas fa-plug'
+                    icon: 'fas fa-laptop-code',
+                    description: 'Yazılım Geliştirme'
                 },
                 {
                     id: '6',
-                    media_url: null,
-                    caption: 'Otomasyon sistemi devreye alındı! 🤖⚡',
-                    like_count: 156,
-                    comments_count: 28,
-                    timestamp: '2024-03-04T13:20:00Z',
+                    media_url: 'images/6.jpg',
+                    caption: '⚙️ Governor sistemleri imalat ve bakım hizmetleri. Türbin kontrolü için güvenilir çözümler. #governor #türbin #kontrol',
+                    like_count: 143,
+                    comments_count: 22,
+                    timestamp: '2024-09-28T13:20:00Z',
                     media_type: 'IMAGE',
-                    icon: 'fas fa-robot'
+                    icon: 'fas fa-water',
+                    description: 'Governor Sistemleri'
+                },
+                {
+                    id: '7',
+                    media_url: 'images/8.jpg',
+                    caption: '🔌 Elektrik pano montajı ve kablolama işlemleri. Profesyonel kurulum ve güvenlik standartları. #elektrikpano #montaj #güvenlik',
+                    like_count: 92,
+                    comments_count: 14,
+                    timestamp: '2024-09-25T09:45:00Z',
+                    media_type: 'IMAGE',
+                    icon: 'fas fa-plug',
+                    description: 'Elektrik Pano Montajı'
+                },
+                {
+                    id: '8',
+                    media_url: 'images/9.jpg',
+                    caption: '🏗️ Saha çalışması ve teknik destek hizmetleri. Uzman ekibimizle 7/24 müşteri desteği. #sahaçalışması #teknikdestek #hizmet',
+                    like_count: 167,
+                    comments_count: 28,
+                    timestamp: '2024-09-22T14:30:00Z',
+                    media_type: 'IMAGE',
+                    icon: 'fas fa-tools',
+                    description: 'Saha Çalışması'
                 }
             ]
         };
@@ -985,7 +1075,7 @@ class InstagramAPI {
         
         feedGrid.innerHTML = ''; // Mevcut postları temizle
         
-        posts.slice(0, 6).forEach((post, index) => {
+        posts.slice(0, 8).forEach((post, index) => {
             const postElement = this.createPostElement(post, index);
             feedGrid.appendChild(postElement);
         });
@@ -994,67 +1084,260 @@ class InstagramAPI {
     createPostElement(post, index) {
         const postDiv = document.createElement('div');
         postDiv.className = 'instagram-post';
+        postDiv.setAttribute('data-index', index);
         
         const imageDiv = document.createElement('div');
         imageDiv.className = 'post-image';
         
         if (post.media_url) {
             const img = document.createElement('img');
-            img.src = post.thumbnail_url || post.media_url;
-            img.alt = post.caption || 'Instagram paylaşımı';
+            img.src = post.media_url;
+            img.alt = post.description || 'Instagram paylaşımı';
             img.style.width = '100%';
             img.style.height = '100%';
             img.style.objectFit = 'cover';
+            img.style.transition = 'transform 0.3s ease';
             imageDiv.appendChild(img);
         } else {
             // Demo icon göster
             const icon = document.createElement('i');
             icon.className = post.icon || 'fas fa-image';
+            icon.style.fontSize = '3rem';
+            icon.style.color = 'var(--primary-color)';
             imageDiv.appendChild(icon);
         }
         
         const overlayDiv = document.createElement('div');
         overlayDiv.className = 'post-overlay';
         
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'post-content';
+        
+        // Post başlık
+        if (post.description) {
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'post-title';
+            titleDiv.textContent = post.description;
+            contentDiv.appendChild(titleDiv);
+        }
+        
         const statsDiv = document.createElement('div');
         statsDiv.className = 'post-stats';
         
         const likesSpan = document.createElement('span');
+        likesSpan.className = 'stat-item';
         likesSpan.innerHTML = `<i class="fas fa-heart"></i> ${post.like_count || Math.floor(Math.random() * 100) + 20}`;
         
         const commentsSpan = document.createElement('span');
+        commentsSpan.className = 'stat-item';
         commentsSpan.innerHTML = `<i class="fas fa-comment"></i> ${post.comments_count || Math.floor(Math.random() * 20) + 3}`;
+        
+        const dateSpan = document.createElement('span');
+        dateSpan.className = 'post-date';
+        const date = new Date(post.timestamp);
+        dateSpan.textContent = date.toLocaleDateString('tr-TR');
         
         statsDiv.appendChild(likesSpan);
         statsDiv.appendChild(commentsSpan);
-        overlayDiv.appendChild(statsDiv);
+        contentDiv.appendChild(statsDiv);
+        contentDiv.appendChild(dateSpan);
+        
+        overlayDiv.appendChild(contentDiv);
         
         postDiv.appendChild(imageDiv);
         postDiv.appendChild(overlayDiv);
         
+        // Hover efektleri
+        postDiv.addEventListener('mouseenter', () => {
+            const img = postDiv.querySelector('img');
+            if (img) {
+                img.style.transform = 'scale(1.1)';
+            }
+            overlayDiv.style.opacity = '1';
+        });
+        
+        postDiv.addEventListener('mouseleave', () => {
+            const img = postDiv.querySelector('img');
+            if (img) {
+                img.style.transform = 'scale(1)';
+            }
+            overlayDiv.style.opacity = '0';
+        });
+        
         // Tıklama olayı ekle
         postDiv.addEventListener('click', () => {
-            if (post.permalink) {
-                window.open(post.permalink, '_blank');
-            } else {
-                window.open(`https://instagram.com/${this.instagramUsername}`, '_blank');
-            }
+            this.openPostModal(post);
         });
+        
+        // Giriş animasyonu
+        setTimeout(() => {
+            postDiv.style.opacity = '1';
+            postDiv.style.transform = 'translateY(0)';
+        }, index * 100);
         
         return postDiv;
     }
     
-    // Gerçek zamanlı güncelleme (opsiyonel)
+    openPostModal(post) {
+        // Modal oluştur
+        const modal = document.createElement('div');
+        modal.className = 'instagram-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-profile">
+                        <img src="${this.demoData.profile.profilePicture}" alt="Profile" class="modal-profile-img">
+                        <span class="modal-username">@${this.demoData.profile.username}</span>
+                    </div>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-image">
+                    ${post.media_url ? 
+                        `<img src="${post.media_url}" alt="${post.description}">` : 
+                        `<div class="modal-icon"><i class="${post.icon}"></i></div>`
+                    }
+                </div>
+                <div class="modal-body">
+                    <div class="modal-stats">
+                        <span><i class="fas fa-heart"></i> ${post.like_count}</span>
+                        <span><i class="fas fa-comment"></i> ${post.comments_count}</span>
+                    </div>
+                    <p class="modal-caption">${post.caption}</p>
+                    <div class="modal-actions">
+                        <button class="modal-btn" onclick="window.open('https://instagram.com/lvt_eom', '_blank')">
+                            <i class="fab fa-instagram"></i> Instagram'da Gör
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Modal stillerini ekle
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        `;
+        
+        // Animasyon
+        setTimeout(() => {
+            modal.style.opacity = '1';
+        }, 10);
+        
+        // Kapatma olayları
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.classList.contains('modal-close')) {
+                modal.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(modal);
+                }, 300);
+            }
+        });
+        
+        // ESC tuşu ile kapatma
+        const handleEsc = (e) => {
+            if (e.key === 'Escape') {
+                modal.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(modal);
+                }, 300);
+                document.removeEventListener('keydown', handleEsc);
+            }
+        };
+        document.addEventListener('keydown', handleEsc);
+    }
+    
+    // Gerçek zamanlı güncelleme ve live badge
     startAutoRefresh() {
+        // Live badge ekle
+        this.addLiveBadge();
+        
+        // 30 saniyede bir güncelle (demo için hızlı)
         setInterval(() => {
-            this.loadInstagramData();
-        }, 300000); // 5 dakikada bir güncelle
+            this.showRefreshIndicator();
+            setTimeout(() => {
+                this.updateRandomStats();
+                this.hideRefreshIndicator();
+            }, 2000);
+        }, 30000);
+    }
+    
+    addLiveBadge() {
+        const instagramSection = document.querySelector('#instagram');
+        if (instagramSection && !instagramSection.querySelector('.instagram-live-badge')) {
+            const liveBadge = document.createElement('div');
+            liveBadge.className = 'instagram-live-badge';
+            liveBadge.innerHTML = '<i class="fas fa-circle"></i> CANLI';
+            instagramSection.style.position = 'relative';
+            instagramSection.appendChild(liveBadge);
+        }
+    }
+    
+    showRefreshIndicator() {
+        const instagramSection = document.querySelector('#instagram');
+        let indicator = instagramSection.querySelector('.instagram-refresh');
+        
+        if (!indicator) {
+            indicator = document.createElement('div');
+            indicator.className = 'instagram-refresh';
+            indicator.innerHTML = '<i class="fas fa-sync"></i> Güncelleniyor...';
+            instagramSection.appendChild(indicator);
+        }
+        
+        indicator.classList.add('active');
+    }
+    
+    hideRefreshIndicator() {
+        const indicator = document.querySelector('.instagram-refresh');
+        if (indicator) {
+            indicator.classList.remove('active');
+        }
+    }
+    
+    updateRandomStats() {
+        // Rastgele istatistikleri güncelle (canlı his vermek için)
+        const posts = document.querySelectorAll('.instagram-post .stat-item');
+        posts.forEach(stat => {
+            const heartStat = stat.querySelector('i.fa-heart');
+            if (heartStat) {
+                const currentLikes = parseInt(stat.textContent.match(/\d+/)[0]);
+                const newLikes = currentLikes + Math.floor(Math.random() * 3);
+                stat.innerHTML = `<i class="fas fa-heart"></i> ${newLikes}`;
+            }
+        });
+        
+        // Takipçi sayısını güncelle
+        this.demoData.profile.followers += Math.floor(Math.random() * 5);
+        const profileInfo = document.querySelector('.profile-description');
+        if (profileInfo) {
+            // Subtle güncelleme efekti ekle
+            profileInfo.style.opacity = '0.8';
+            setTimeout(() => {
+                profileInfo.style.opacity = '1';
+            }, 500);
+        }
     }
 }
 
 // Instagram API'yi başlat
 document.addEventListener('DOMContentLoaded', () => {
     const instagramAPI = new InstagramAPI();
+    
+    // Auto-refresh ve live özelliklerini başlat
+    setTimeout(() => {
+        instagramAPI.startAutoRefresh();
+    }, 2000);
     
     // Otomatik yenileme başlat (opsiyonel)
     // instagramAPI.startAutoRefresh();
