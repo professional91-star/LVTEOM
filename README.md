@@ -125,7 +125,9 @@ npx http-server
 
 - 📍 Ankara, Türkiye
 - 📞 +90 XXX XXX XX XX
-- 📧 info@lvtelektrik.com
+- 🌐 Website: https://professional91-star.github.io/lvt/
+- 📧 info@lvt-eom.com
+- 📸 Instagram: [@lvt_eom](https://instagram.com/lvt_eom)
 - 🌐 www.lvtelektrik.com
 
 ## 📝 Lisans
@@ -142,7 +144,7 @@ Bu proje LVT Elektrik Otomasyon için özel olarak geliştirilmiştir.
 
 ## 🤝 Katkıda Bulunma
 
-Bu proje LVT Elektrik Otomasyon için özel olarak geliştirilmiştir. Önerilerinizi info@lvtelektrik.com adresine gönderebilirsiniz.
+Bu proje LVT Elektrik Otomasyon için özel olarak geliştirilmiştir. Önerilerinizi info@lvt-eom.com adresine gönderebilirsiniz.
 
 ---
 

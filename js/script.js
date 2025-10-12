@@ -442,7 +442,7 @@ contactForm.addEventListener('submit', function(e) {
 
 // Create mailto link as fallback
 function createMailtoLink(params) {
-    const email = 'info@lvtelektrik.com'; // Şirket email adresi
+    const email = 'info@lvt-eom.com'; // Şirket email adresi
     const subject = encodeURIComponent(`Website İletişim: ${params.subject}`);
     const body = encodeURIComponent(`
 İsim: ${params.from_name}

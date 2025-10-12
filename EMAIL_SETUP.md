@@ -64,12 +64,12 @@ Eğer EmailJS kurmak istemiyorsanız, mevcut kod otomatik olarak kullanıcının
 2. EmailJS çalışmazsa otomatik olarak mailto linki açılır
 3. Kullanıcının varsayılan email programında hazır mesaj açılır
 
-### 📧 Şirket Email Adresi
+**Şirket Email Adresi**
 
 `js/script.js` dosyasında şu satırı şirketinizin gerçek email adresi ile değiştirin:
 
 ```javascript
-const email = 'info@lvtelektrik.com'; // Gerçek email adresinizi buraya
+const email = 'info@lvt-eom.com'; // Gerçek email adresinizi buraya
 ```
 
 ### ✅ Test Etme
