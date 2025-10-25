@@ -1390,3 +1390,594 @@ async function handleInstagramCallback() {
         }
     }
 }
+
+// ================================
+// Simple Catalog Functions
+// ================================
+
+// Simple catalog button - no complex functions needed
+function openCatalog() {
+    window.open('catalog/LVT-EOM.pdf', '_blank');
+}
+
+// Initialize FlipHTML5 viewer
+function initFlipViewer() {
+    flipbook = document.getElementById('flipbook');
+    if (!flipbook) return;
+    
+    // Initialize pages
+    initializePages();
+    
+    // Event listeners
+    const prevBtn = document.getElementById('flipPrevPage');
+    const nextBtn = document.getElementById('flipNextPage');
+    const autoPlayBtn = document.getElementById('flipAutoPlay');
+    const zoomInBtn = document.getElementById('flipZoomIn');
+    const zoomOutBtn = document.getElementById('flipZoomOut');
+    const fullscreenBtn = document.getElementById('flipFullscreen');
+    const bookmarkBtn = document.getElementById('flipBookmark');
+    
+    if (prevBtn) prevBtn.addEventListener('click', flipPreviousPage);
+    if (nextBtn) nextBtn.addEventListener('click', flipNextPage);
+    if (autoPlayBtn) autoPlayBtn.addEventListener('click', toggleAutoPlay);
+    if (zoomInBtn) zoomInBtn.addEventListener('click', zoomInFlip);
+    if (zoomOutBtn) zoomOutBtn.addEventListener('click', zoomOutFlip);
+    if (fullscreenBtn) fullscreenBtn.addEventListener('click', toggleFlipFullscreen);
+    if (bookmarkBtn) bookmarkBtn.addEventListener('click', toggleBookmark);
+    
+    // Add page click events
+    const pages = document.querySelectorAll('.page');
+    pages.forEach((page, index) => {
+        page.addEventListener('click', (e) => {
+            if (e.target.classList.contains('page')) {
+                if (index < totalPages / 2) {
+                    flipPreviousPage();
+                } else {
+                    flipNextPage();
+                }
+            }
+        });
+    });
+    
+    updateFlipNavigation();
+}
+
+// Initialize pages setup
+function initializePages() {
+    const pages = document.querySelectorAll('.page');
+    pages.forEach((page, index) => {
+        if (index > 0) {
+            page.style.zIndex = totalPages - index;
+        }
+    });
+    updatePageInfo();
+}
+
+// Flip to previous page
+function flipPreviousPage() {
+    if (currentPage <= 1) return;
+    
+    const pages = document.querySelectorAll('.page');
+    const currentPageEl = pages[currentPage - 1];
+    
+    if (currentPageEl) {
+        currentPageEl.classList.remove('flipped');
+        currentPage--;
+        updateFlipNavigation();
+        updatePageInfo();
+        
+        // Add flip sound effect (optional)
+        playFlipSound();
+    }
+}
+
+// Flip to next page
+function flipNextPage() {
+    if (currentPage >= totalPages) return;
+    
+    const pages = document.querySelectorAll('.page');
+    const nextPageEl = pages[currentPage];
+    
+    if (nextPageEl) {
+        nextPageEl.classList.add('flipped');
+        currentPage++;
+        updateFlipNavigation();
+        updatePageInfo();
+        
+        // Add flip sound effect (optional)
+        playFlipSound();
+    }
+}
+
+// Update navigation buttons
+function updateFlipNavigation() {
+    const prevBtn = document.getElementById('flipPrevPage');
+    const nextBtn = document.getElementById('flipNextPage');
+    
+    if (prevBtn) prevBtn.disabled = (currentPage <= 1);
+    if (nextBtn) nextBtn.disabled = (currentPage >= totalPages);
+}
+
+// Update page information
+function updatePageInfo() {
+    const currentPageSpan = document.getElementById('currentFlipPage');
+    const totalPagesSpan = document.getElementById('totalFlipPages');
+    
+    if (currentPageSpan) currentPageSpan.textContent = currentPage;
+    if (totalPagesSpan) totalPagesSpan.textContent = totalPages;
+}
+
+// Toggle auto play
+function toggleAutoPlay() {
+    const autoPlayBtn = document.getElementById('flipAutoPlay');
+    const icon = autoPlayBtn.querySelector('i');
+    
+    if (isAutoPlaying) {
+        clearInterval(autoPlayInterval);
+        isAutoPlaying = false;
+        icon.className = 'fas fa-play';
+        autoPlayBtn.innerHTML = '<i class="fas fa-play"></i> Oto';
+    } else {
+        autoPlayInterval = setInterval(() => {
+            if (currentPage >= totalPages) {
+                // Reset to beginning
+                resetToFirstPage();
+            } else {
+                flipNextPage();
+            }
+        }, 3000);
+        isAutoPlaying = true;
+        icon.className = 'fas fa-pause';
+        autoPlayBtn.innerHTML = '<i class="fas fa-pause"></i> Durdur';
+    }
+}
+
+// Reset to first page
+function resetToFirstPage() {
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(page => {
+        page.classList.remove('flipped');
+    });
+    currentPage = 1;
+    updateFlipNavigation();
+    updatePageInfo();
+}
+
+// Render a page
+function renderPage(num) {
+    pageRendering = true;
+    
+    pdfDoc.getPage(num).then(function(page) {
+        const viewport = page.getViewport({scale: scale});
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        
+        const renderContext = {
+            canvasContext: ctx,
+            viewport: viewport
+        };
+        
+        const renderTask = page.render(renderContext);
+        
+        renderTask.promise.then(function() {
+            pageRendering = false;
+            if (pageNumPending !== null) {
+                renderPage(pageNumPending);
+                pageNumPending = null;
+            }
+        });
+    });
+    
+    // Update page number
+    document.getElementById('pageNumber').value = num;
+}
+
+// Queue render page
+function queueRenderPage(num) {
+    if (pageRendering) {
+        pageNumPending = num;
+    } else {
+        renderPage(num);
+    }
+}
+
+// Previous page
+function onPrevPage() {
+    if (pageNum <= 1) return;
+    pageNum--;
+    queueRenderPage(pageNum);
+    updateNavButtons();
+}
+
+// Next page
+function onNextPage() {
+    if (pageNum >= pdfDoc.numPages) return;
+    pageNum++;
+    queueRenderPage(pageNum);
+    updateNavButtons();
+}
+
+// Zoom in
+function onZoomIn() {
+    scale += 0.2;
+    if (scale > 3.0) scale = 3.0;
+    queueRenderPage(pageNum);
+    updateZoomLevel();
+}
+
+// Zoom out
+function onZoomOut() {
+    scale -= 0.2;
+    if (scale < 0.5) scale = 0.5;
+    queueRenderPage(pageNum);
+    updateZoomLevel();
+}
+
+// Page number change
+function onPageNumberChange() {
+    const input = document.getElementById('pageNumber');
+    const newPageNum = parseInt(input.value);
+    
+    if (newPageNum >= 1 && newPageNum <= pdfDoc.numPages && newPageNum !== pageNum) {
+        pageNum = newPageNum;
+        queueRenderPage(pageNum);
+        updateNavButtons();
+    } else {
+        input.value = pageNum; // Reset to current page if invalid
+    }
+}
+
+// Update navigation buttons
+function updateNavButtons() {
+    document.getElementById('prevPage').disabled = (pageNum <= 1);
+    document.getElementById('nextPage').disabled = (pageNum >= pdfDoc.numPages);
+}
+
+// Update zoom level display
+function updateZoomLevel() {
+    document.getElementById('zoomLevel').textContent = Math.round(scale * 100);
+}
+
+// Toggle fullscreen for PDF viewer
+function togglePDFFullscreen() {
+    const container = document.querySelector('.pdfjs-container');
+    
+    if (!document.fullscreenElement) {
+        if (container.requestFullscreen) {
+            container.requestFullscreen();
+        } else if (container.webkitRequestFullscreen) {
+            container.webkitRequestFullscreen();
+        } else if (container.msRequestFullscreen) {
+            container.msRequestFullscreen();
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+}
+        }
+    }
+}
+
+// Download catalog
+function downloadCatalog() {
+    const link = document.createElement('a');
+    link.href = 'catalog/LVT-EOM.pdf';
+    link.download = 'LVT-EOM-Katalog-2025.pdf';
+    link.click();
+    
+    // Show download notification
+    showNotification('Katalog indiriliyor...', 'info');
+}
+
+// Magazine loading animation
+function showMagazineLoading() {
+    const modal = document.getElementById('magazine-modal');
+    const loadingHtml = `
+        <div class="pdf-loading">
+            <i class="fas fa-spinner"></i>
+            <span>Katalog yükleniyor...</span>
+        </div>
+    `;
+    
+    const pdfContainer = modal.querySelector('.pdf-container-modal');
+    if (pdfContainer) {
+        pdfContainer.innerHTML = loadingHtml;
+    }
+}
+
+// Zoom functions for FlipHTML5
+function zoomInFlip() {
+    const flipbook = document.getElementById('flipbook');
+    if (flipbook) {
+        const currentScale = flipbook.style.transform.match(/scale\(([\d.]+)\)/);
+        const scale = currentScale ? parseFloat(currentScale[1]) : 1;
+        const newScale = Math.min(scale + 0.1, 1.5);
+        flipbook.style.transform = `scale(${newScale})`;
+    }
+}
+
+function zoomOutFlip() {
+    const flipbook = document.getElementById('flipbook');
+    if (flipbook) {
+        const currentScale = flipbook.style.transform.match(/scale\(([\d.]+)\)/);
+        const scale = currentScale ? parseFloat(currentScale[1]) : 1;
+        const newScale = Math.max(scale - 0.1, 0.7);
+        flipbook.style.transform = `scale(${newScale})`;
+    }
+}
+
+// Toggle fullscreen for FlipHTML5
+function toggleFlipFullscreen() {
+    const container = document.querySelector('.fliphtml5-container');
+    
+    if (!document.fullscreenElement) {
+        if (container.requestFullscreen) {
+            container.requestFullscreen();
+        } else if (container.webkitRequestFullscreen) {
+            container.webkitRequestFullscreen();
+        } else if (container.msRequestFullscreen) {
+            container.msRequestFullscreen();
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+}
+
+// Toggle bookmark
+function toggleBookmark() {
+    const bookmarkBtn = document.getElementById('flipBookmark');
+    const icon = bookmarkBtn.querySelector('i');
+    
+    if (icon.classList.contains('fas')) {
+        icon.className = 'far fa-bookmark';
+        localStorage.setItem('catalogBookmark', currentPage);
+        showNotification('Sayfa yer imlerine eklendi!', 'success');
+    } else {
+        icon.className = 'fas fa-bookmark';
+        localStorage.removeItem('catalogBookmark');
+        showNotification('Yer imi kaldırıldı!', 'info');
+    }
+}
+
+// Play flip sound effect
+function playFlipSound() {
+    // Create audio context for flip sound
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.1);
+        
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.1);
+    } catch (error) {
+        // Silently fail if audio context is not supported
+        console.log('Ses efekti desteklenmiyor');
+    }
+}
+
+// Initialize catalog interactions
+document.addEventListener('DOMContentLoaded', function() {
+    // Simple catalog initialization
+    console.log('Catalog section loaded successfully');
+    
+    // Add click tracking for catalog buttons
+    const catalogBtns = document.querySelectorAll('.catalog-btn');
+    catalogBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            console.log('Catalog button clicked:', this.textContent.trim());
+        });
+    });
+    
+    // Add keyboard navigation for catalog
+    document.addEventListener('keydown', function(e) {
+        // Only handle keys when catalog section is in view
+        const catalogSection = document.getElementById('catalog');
+        if (catalogSection && isElementInViewport(catalogSection)) {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    prevCatalogPage();
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    nextCatalogPage();
+                    break;
+            }
+        }
+    });
+    
+    // Add smooth scroll to catalog when navigation is used
+    const catalogNavButtons = document.querySelectorAll('.catalog-navigation .nav-btn');
+    catalogNavButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const catalogSection = document.getElementById('catalog');
+            if (catalogSection) {
+                catalogSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    });
+});
+
+// Helper function to check if element is in viewport
+function isElementInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+}
+
+// Touch gestures for catalog pages
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', function(e) {
+    const catalogContainer = document.querySelector('.catalog-container');
+    if (catalogContainer && isElementInViewport(catalogContainer)) {
+        touchStartX = e.changedTouches[0].screenX;
+    }
+});
+
+document.addEventListener('touchend', function(e) {
+    const catalogContainer = document.querySelector('.catalog-container');
+    if (catalogContainer && isElementInViewport(catalogContainer)) {
+        touchEndX = e.changedTouches[0].screenX;
+        handleCatalogSwipe();
+    }
+});
+
+function handleCatalogSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+            nextCatalogPage(); // Swipe left = next page
+        } else {
+            prevCatalogPage(); // Swipe right = previous page
+        }
+    }
+}
+
+// Auto-advance pages (optional)
+function startCatalogAutoplay() {
+    setInterval(() => {
+        if (currentCatalogPage < totalCatalogPages) {
+            nextCatalogPage();
+        } else {
+            showCatalogPage(1); // Reset to first page
+        }
+    }, 10000); // 10 seconds per page
+}
+
+// Uncomment to enable auto-advance
+// startCatalogAutoplay();
+
+// Basit 6'lı Grid Slider
+class SimpleGridSlider {
+    constructor() {
+        console.log('SimpleGridSlider constructor started');
+        this.container = document.getElementById('imageGridSlider');
+        console.log('Container found:', this.container);
+        
+        this.allImages = [
+            '1.png', '2.png', '3.jpg', '4.jpg', '5.png', '6.jpg', '7.jpg', '8.jpg', '9.jpg',
+            'a.jpg', 'b.jpg', 'c.jpg', 'd.jpg', 'e.jpg', 'f.jpg', 'g.jpg', 'h.jpg', 
+            'k.jpg', 'l.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg', 
+            '16.jpg', '17.jpg', '18.jpg'
+        ];
+        
+        // 6 fotoğraflık gruplar oluştur
+        this.imageGroups = [];
+        for (let i = 0; i < this.allImages.length; i += 6) {
+            this.imageGroups.push(this.allImages.slice(i, i + 6));
+        }
+        console.log('Created', this.imageGroups.length, 'groups:', this.imageGroups);
+        
+        this.currentGroupIndex = 0;
+        this.intervalId = null;
+        
+        if (this.container) {
+            console.log('Container exists, starting slideshow');
+            this.startSlideshow();
+        } else {
+            console.error('Container NOT found!');
+        }
+    }
+    
+    startSlideshow() {
+        console.log('Starting slideshow with', this.imageGroups.length, 'groups');
+        this.showGroup();
+        
+        // Interval'i temizle ve yeniden başlat
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+        }
+        
+        this.intervalId = setInterval(() => {
+            console.log('Interval triggered - switching to next group');
+            this.nextGroup();
+        }, 1000); // 1 saniye geçiş
+        
+        console.log('Slideshow started, interval ID:', this.intervalId);
+    }
+    
+    showGroup() {
+        console.log('Showing group:', this.currentGroupIndex);
+        const currentGroup = this.imageGroups[this.currentGroupIndex];
+        console.log('Current images:', currentGroup);
+        
+        // Önce eski container'ı temizle
+        this.container.innerHTML = '';
+        
+        const gridContainer = document.createElement('div');
+        gridContainer.className = 'grid-container';
+        
+        currentGroup.forEach((imageName, index) => {
+            const gridItem = document.createElement('div');
+            gridItem.className = 'grid-item';
+            
+            const img = document.createElement('img');
+            img.src = `images/${imageName}`;
+            img.alt = `LVT Elektrik Otomasyon - Proje ${index + 1}`;
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            
+            gridItem.appendChild(img);
+            gridContainer.appendChild(gridItem);
+        });
+        
+        this.container.appendChild(gridContainer);
+        
+        // Active class ekle
+        setTimeout(() => {
+            gridContainer.classList.add('active');
+        }, 50);
+    }
+    
+    nextGroup() {
+        const oldIndex = this.currentGroupIndex;
+        this.currentGroupIndex = (this.currentGroupIndex + 1) % this.imageGroups.length;
+        console.log(`Group changed: ${oldIndex} -> ${this.currentGroupIndex}`);
+        this.showGroup();
+    }
+
+}
+
+// Initialize simple grid slider when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, creating SimpleGridSlider');
+    const slider = new SimpleGridSlider();
+    
+    // Fallback test - eğer 3 saniye sonra geçiş yoksa manuel test
+    setTimeout(() => {
+        console.log('Testing manual group switch after 3 seconds');
+        if (slider && typeof slider.nextGroup === 'function') {
+            slider.nextGroup();
+        }
+    }, 3000);
+});

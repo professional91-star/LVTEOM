@@ -39,6 +39,7 @@
                         <li><a href="#home" class="nav-link active">Ana Sayfa</a></li>
                         <li><a href="#about" class="nav-link">Hakkımızda</a></li>
                         <li><a href="#services" class="nav-link">Hizmetlerimiz</a></li>
+                        <li><a href="#catalog" class="nav-link">Katalog</a></li>
                         <li><a href="#instagram" class="nav-link">Instagram</a></li>
                         <li><a href="#contact" class="nav-link">İletişim</a></li>
                     </ul>
@@ -50,52 +51,114 @@
         </nav>
     </header>
 
-    <!-- Image Slider Gallery -->
+    <!-- Image Slider Gallery - Rebuilt -->
     <section class="image-slider">
-        <div class="slider-container">
-            <div class="slider-track">
-                <div class="slide">
-                    <img src="images/1.png" alt="LVT Elektrik Otomasyon - Proje 1" class="slide-image">
+        <div class="slider-wrapper">
+            <!-- Navigation Buttons -->
+            <!-- Basit Test Slider -->
+            <div class="image-grid-slider">
+                <div class="grid-container active" id="testGrid">
+                    <div class="grid-item">
+                        <img src="images/1.png" alt="LVT Elektrik Otomasyon - Test 1">
+                    </div>
+                    <div class="grid-item">
+                        <img src="images/2.png" alt="LVT Elektrik Otomasyon - Test 2">
+                    </div>
+                    <div class="grid-item">
+                        <img src="images/3.jpg" alt="LVT Elektrik Otomasyon - Test 3">
+                    </div>
+                    <div class="grid-item">
+                        <img src="images/4.jpg" alt="LVT Elektrik Otomasyon - Test 4">
+                    </div>
+                    <div class="grid-item">
+                        <img src="images/5.png" alt="LVT Elektrik Otomasyon - Test 5">
+                    </div>
+                    <div class="grid-item">
+                        <img src="images/6.jpg" alt="LVT Elektrik Otomasyon - Test 6">
+                    </div>
                 </div>
-                <div class="slide">
-                    <img src="images/2.png" alt="LVT Elektrik Otomasyon - Proje 2" class="slide-image">
-                </div>
-                <div class="slide">
-                    <img src="images/3.jpg" alt="LVT Elektrik Otomasyon - Proje 3" class="slide-image">
-                </div>
-                <div class="slide">
-                    <img src="images/4.jpg" alt="LVT Elektrik Otomasyon - Proje 4" class="slide-image">
-                </div>
-                <div class="slide">
-                    <img src="images/5.png" alt="LVT Elektrik Otomasyon - Proje 5" class="slide-image">
-                </div>
-                <div class="slide">
-                    <img src="images/6.jpg" alt="LVT Elektrik Otomasyon - Proje 6" class="slide-image">
-                </div>
-                <div class="slide">
-                    <img src="images/7.jpg" alt="LVT Elektrik Otomasyon - Proje 7" class="slide-image">
-                </div>
-                <div class="slide">
-                    <img src="images/8.jpg" alt="LVT Elektrik Otomasyon - Proje 8" class="slide-image">
-                </div>
-                <div class="slide">
-                    <img src="images/9.jpg" alt="LVT Elektrik Otomasyon - Proje 9" class="slide-image">
-                </div>
-                <!-- Tekrar eden resimler (sonsuz döngü için) -->
-                <div class="slide">
-                    <img src="images/1.png" alt="LVT Elektrik Otomasyon - Proje 1" class="slide-image">
-                </div>
-                <div class="slide">
-                    <img src="images/2.png" alt="LVT Elektrik Otomasyon - Proje 2" class="slide-image">
-                </div>
-                <div class="slide">
-                    <img src="images/3.jpg" alt="LVT Elektrik Otomasyon - Proje 3" class="slide-image">
-                </div>
-                <div class="slide">
-                    <img src="images/8.jpg" alt="LVT Elektrik Otomasyon - Proje 8" class="slide-image">
-                </div>
-                <div class="slide">
-                    <img src="images/9.jpg" alt="LVT Elektrik Otomasyon - Proje 9" class="slide-image">
+            </div>
+            
+            <script>
+            // Tüm fotoğraflarla slider scripti
+            let allImages = [
+                // Mevcut fotoğraflar
+                '1.png', '2.png', '3.jpg', '4.jpg', '5.png', '6.jpg', '7.jpg', '8.jpg', '9.jpg',
+                // a-l fotoğrafları
+                'a.jpg', 'b.jpg', 'c.jpg', 'd.jpg', 'e.jpg', 'f.jpg', 'g.jpg', 'h.jpg', 'k.jpg', 'l.jpg',
+                // 11-18 fotoğrafları
+                '11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg', '16.jpg', '17.jpg', '18.jpg'
+            ];
+            
+            // 6'lı gruplar oluştur
+            let imageGroups = [];
+            for (let i = 0; i < allImages.length; i += 6) {
+                imageGroups.push(allImages.slice(i, i + 6));
+            }
+            
+            console.log('Toplam fotoğraf:', allImages.length);
+            console.log('Toplam grup:', imageGroups.length);
+            console.log('Gruplar:', imageGroups);
+            
+            let currentGroupIndex = 0;
+            
+            function updateSlider() {
+                const grid = document.getElementById('testGrid');
+                const currentGroup = imageGroups[currentGroupIndex];
+                
+                if (grid && currentGroup) {
+                    const items = grid.querySelectorAll('.grid-item');
+                    console.log('Yumuşak geçiş - Grup:', currentGroupIndex, currentGroup);
+                    
+                    // Fade out efekti
+                    items.forEach(item => {
+                        item.style.opacity = '0.3';
+                        item.style.transform = 'scale(0.95)';
+                    });
+                    
+                    // Kısa gecikme sonrası fotoğrafları değiştir ve fade in
+                    setTimeout(() => {
+                        items.forEach((item, index) => {
+                            const img = item.querySelector('img');
+                            if (currentGroup[index] && img) {
+                                img.src = `images/${currentGroup[index]}`;
+                                img.alt = `LVT Elektrik Otomasyon - ${currentGroup[index]}`;
+                            }
+                        });
+                        
+                        // Fade in efekti
+                        setTimeout(() => {
+                            items.forEach(item => {
+                                item.style.opacity = '1';
+                                item.style.transform = 'scale(1)';
+                            });
+                        }, 100);
+                    }, 300);
+                }
+                
+                // Sonraki gruba geç
+                currentGroupIndex = (currentGroupIndex + 1) % imageGroups.length;
+            }
+            
+            // İlk grubu göster
+            updateSlider();
+            
+            // Her 2 saniyede yumuşak geçiş
+            console.log('Starting slider with 2 second soft transition');
+            setInterval(() => {
+                console.log('2 seconds passed, soft transition...');
+                updateSlider();
+            }, 2000);
+            </script>
+                
+                <!-- Slider Controls -->
+                <div class="slider-controls">
+                    <button class="play-pause-btn" id="playPauseBtn">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <div class="slider-dots" id="sliderDots">
+                        <!-- Dots will be dynamically generated -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -321,107 +384,111 @@
         </div>
     </section>
 
+    <!-- Catalog Section -->
+    <section id="catalog" class="catalog section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Katalog</span>
+                <h2 class="section-title">LVT-EOM Kataloğu 2025</h2>
+                <p class="section-description">
+                    Elektrik, otomasyon ve endüstriyel çözümlerimizle ilgili detaylı bilgileri PDF kataloğumuzdan inceleyebilirsiniz
+                </p>
+            </div>
+            
+            <!-- Simple Catalog Button -->
+            <div class="catalog-button-container">
+                <div class="catalog-card">
+                    <div class="catalog-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="catalog-info">
+                        <h3>LVT-EOM Katalog 2025</h3>
+                        <p>Elektrik, otomasyon ve endüstriyel çözümlerimizle ilgili detaylı bilgileri katalogumuzdan inceleyebilirsiniz.</p>
+                        <div class="catalog-features">
+                            <span class="feature-tag"><i class="fas fa-bolt"></i> Elektrik Sistemleri</span>
+                            <span class="feature-tag"><i class="fas fa-cogs"></i> Otomasyon</span>
+                            <span class="feature-tag"><i class="fas fa-water"></i> Hidroelektrik</span>
+                            <span class="feature-tag"><i class="fas fa-laptop-code"></i> SCADA</span>
+                        </div>
+                    </div>
+                    <div class="catalog-actions">
+                        <a href="catalog/LVT-EOM.pdf" target="_blank" class="catalog-btn primary">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span>Kataloğu Görüntüle</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Instagram Section -->
-    <section id="instagram" class="instagram section-padding">
+    <section id="instagram" class="instagram section-padding bg-light">
         <div class="container">
             <div class="section-header">
                 <span class="section-subtitle">Sosyal Medya</span>
                 <h2 class="section-title">Instagram'da Bizi Takip Edin</h2>
                 <p class="section-description">
-                    Projelerimiz, güncel çalışmalarımız ve şirket haberlerimizi Instagram hesabımızdan takip
-                    edebilirsiniz
+                    Projelerimiz ve çalışmalarımızı Instagram'da takip edin
                 </p>
             </div>
-            <div class="instagram-content">
-                <div class="instagram-profile">
-                    <div class="profile-header">
-                        <div class="profile-avatar">
-                            <img src="images/logo.png" alt="LVT Elektrik Instagram" class="profile-img">
+            
+            <div class="instagram-wrapper">
+                <!-- Instagram Profile Info -->
+                <div class="instagram-header">
+                    <div class="instagram-avatar">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <div class="instagram-info">
+                        <h3>@lvt_eom</h3>
+                        <p>LVT Elektrik Otomasyon - Projelerimiz ve güncel çalışmalarımız</p>
+                    </div>
+                    <a href="https://instagram.com/lvt_eom" target="_blank" class="instagram-btn">
+                        <i class="fab fa-instagram"></i> Takip Et
+                    </a>
+                </div>
+
+                <!-- Instagram Photos Grid -->
+                <div class="instagram-grid">
+                    <div class="instagram-item">
+                        <div class="instagram-photo">
+                            <img src="images/a.jpg" alt="LVT Projesi A" loading="lazy">
+                            <div class="instagram-overlay">
+                                <i class="fab fa-instagram"></i>
+                            </div>
                         </div>
-                        <div class="profile-info">
-                            <h3 class="profile-name">@lvt_eom</h3>
-                            <p class="profile-description">🔌 Elektrik & Otomasyon Uzmanı<br>⚡ SCADA & PLC
-                                Çözümleri<br>🏭 Endüstriyel Sistemler</p>
-                            <a href="https://instagram.com/lvt_eom" target="_blank" class="instagram-follow-btn">
-                                <i class="fab fa-instagram"></i> Takip Et
-                            </a>
+                    </div>
+                    <div class="instagram-item">
+                        <div class="instagram-photo">
+                            <img src="images/b.jpg" alt="LVT Projesi B" loading="lazy">
+                            <div class="instagram-overlay">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="instagram-item">
+                        <div class="instagram-photo">
+                            <img src="images/c.jpg" alt="LVT Projesi C" loading="lazy">
+                            <div class="instagram-overlay">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="instagram-item">
+                        <div class="instagram-photo">
+                            <img src="images/d.jpg" alt="LVT Projesi D" loading="lazy">
+                            <div class="instagram-overlay">
+                                <i class="fab fa-instagram"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="instagram-feed">
-                    <div class="feed-grid">
-                        <div class="instagram-post">
-                            <div class="post-image">
-                                <i class="fas fa-microchip"></i>
-                            </div>
-                            <div class="post-overlay">
-                                <div class="post-stats">
-                                    <span><i class="fas fa-heart"></i> 45</span>
-                                    <span><i class="fas fa-comment"></i> 8</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instagram-post">
-                            <div class="post-image">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                            <div class="post-overlay">
-                                <div class="post-stats">
-                                    <span><i class="fas fa-heart"></i> 62</span>
-                                    <span><i class="fas fa-comment"></i> 12</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instagram-post">
-                            <div class="post-image">
-                                <i class="fas fa-cogs"></i>
-                            </div>
-                            <div class="post-overlay">
-                                <div class="post-stats">
-                                    <span><i class="fas fa-heart"></i> 38</span>
-                                    <span><i class="fas fa-comment"></i> 5</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instagram-post">
-                            <div class="post-image">
-                                <i class="fas fa-industry"></i>
-                            </div>
-                            <div class="post-overlay">
-                                <div class="post-stats">
-                                    <span><i class="fas fa-heart"></i> 73</span>
-                                    <span><i class="fas fa-comment"></i> 15</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instagram-post">
-                            <div class="post-image">
-                                <i class="fas fa-laptop-code"></i>
-                            </div>
-                            <div class="post-overlay">
-                                <div class="post-stats">
-                                    <span><i class="fas fa-heart"></i> 51</span>
-                                    <span><i class="fas fa-comment"></i> 9</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instagram-post">
-                            <div class="post-image">
-                                <i class="fas fa-water"></i>
-                            </div>
-                            <div class="post-overlay">
-                                <div class="post-stats">
-                                    <span><i class="fas fa-heart"></i> 89</span>
-                                    <span><i class="fas fa-comment"></i> 18</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="instagram-cta">
-                        <a href="https://instagram.com/lvt_eom" target="_blank" class="btn btn-primary">
-                            <i class="fab fa-instagram"></i> Tüm Gönderileri Gör
-                        </a>
-                    </div>
+
+                <!-- Instagram CTA -->
+                <div class="instagram-footer">
+                    <a href="https://instagram.com/lvt_eom" target="_blank" class="btn btn-primary btn-instagram">
+                        <i class="fab fa-instagram"></i> Daha Fazla Gönderi İçin Takip Et
+                    </a>
                 </div>
             </div>
         </div>
@@ -522,6 +589,7 @@
                         <li><a href="#electrical">Elektrik Sistemleri</a></li>
                         <li><a href="#hydroelectric">Hidroelektrik Santrali</a></li>
                         <li><a href="#software">Yazılım & SCADA</a></li>
+                        <li><a href="#catalog">Katalog</a></li>
                         <li><a href="#consulting">Danışmanlık</a></li>
                     </ul>
                 </div>
@@ -553,6 +621,69 @@
             </div>
         </div>
     </footer>
+
+    <!-- Magazine Modal -->
+    <div id="magazine-modal" class="magazine-modal">
+        <div class="magazine-modal-content">
+            <div class="magazine-modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-book-open"></i>
+                    <span>LVT-EOM Katalog 2025</span>
+                </div>
+                <div class="modal-controls">
+                    <button class="modal-btn" onclick="toggleFullscreen()">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <button class="modal-btn" onclick="downloadCatalog()">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="modal-btn close-btn" onclick="closeMagazine()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="magazine-viewer">
+                <div class="page-navigation">
+                    <button class="nav-btn prev-btn" onclick="previousPage()">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="page-counter">
+                        <span id="current-page">1</span> / <span id="total-pages">1</span>
+                    </div>
+                    <button class="nav-btn next-btn" onclick="nextPage()">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="pdf-container-modal">
+                    <iframe id="catalog-frame" 
+                            src="catalog/LVT-EOM.pdf#toolbar=1&navpanes=1&scrollbar=1" 
+                            class="catalog-iframe" 
+                            title="LVT-EOM Kataloğu">
+                        <div class="pdf-fallback">
+                            <div class="fallback-content">
+                                <i class="fas fa-file-pdf"></i>
+                                <h3>PDF Görüntüleyici Desteklenmiyor</h3>
+                                <p>Tarayıcınız PDF görüntülemeyi desteklemiyor.</p>
+                                <a href="catalog/LVT-EOM.pdf" target="_blank" class="btn btn-primary">
+                                    <i class="fas fa-external-link-alt"></i> Yeni Sekmede Aç
+                                </a>
+                            </div>
+                        </div>
+                    </iframe>
+                </div>
+                <div class="zoom-controls">
+                    <button class="zoom-btn" onclick="zoomOut()">
+                        <i class="fas fa-search-minus"></i>
+                    </button>
+                    <span class="zoom-level">100%</span>
+                    <button class="zoom-btn" onclick="zoomIn()">
+                        <i class="fas fa-search-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="magazine-modal-overlay" onclick="closeMagazine()"></div>
+    </div>
 
     <script src="js/script.js?v=20241012-2"></script>
 </body>
