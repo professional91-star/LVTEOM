@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LVT Elektrik Otomasyon - Geleceğin Teknolojisi | AI & IoT Çözümleri</title>
+    <meta name="description"
+        content="LVT Elektrik Otomasyon - Elektrik, otomasyon, SCADA sistemleri, yapay zeka ve IoT entegrasyonu ile endüstriyel çözümler. 24+ yıllık deneyim.">
+    <meta name="keywords" content="elektrik otomasyon, SCADA, PLC, hidroelektrik, yapay zeka, IoT, endüstri 4.0">
+    <!-- Cache busting for GitHub Pages -->
+    <meta name="cache-version" content="2024-10-12-v2"  >
+    <link rel="stylesheet" href="css/style.css?v=20241012-2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- EmailJS for contact form -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <div class="logo-container">
+                        <img src="images/logo.png" alt="LVT Elektrik Otomasyon Logo" class="brand-logo">
+                        <div class="brand-text">
+                            <h2 class="logo">LVT <span class="text-primary"> EOM</span></h2>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-menu" id="nav-menu">
+                    <ul class="nav-list">
+                        <li><a href="#home" class="nav-link active">Ana Sayfa</a></li>
+                        <li><a href="#about" class="nav-link">Hakkımızda</a></li>
+                        <li><a href="#services" class="nav-link">Hizmetlerimiz</a></li>
+                        <li><a href="#catalog" class="nav-link">Katalog</a></li>
+                        <li><a href="#instagram" class="nav-link">Instagram</a></li>
+                        <li><a href="#contact" class="nav-link">İletişim</a></li>
+                    </ul>
+                </div>
+                <div class="nav-toggle" id="nav-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Image Slider Gallery - Rebuilt -->
+    <section class="image-slider">
+        <div class="slider-wrapper">
+            <!-- Navigation Buttons -->
+            <!-- Basit Test Slider -->
+            <div class="image-grid-slider">
+                <div class="grid-container active" id="testGrid">
+                    <div class="grid-item">
+                        <img src="images/1.png" alt="LVT Elektrik Otomasyon - Test 1">
+                    </div>
+                    <div class="grid-item">
+                        <img src="images/2.png" alt="LVT Elektrik Otomasyon - Test 2">
+                    </div>
+                    <div class="grid-item">
+                        <img src="images/3.jpg" alt="LVT Elektrik Otomasyon - Test 3">
+                    </div>
+                    <div class="grid-item">
+                        <img src="images/4.jpg" alt="LVT Elektrik Otomasyon - Test 4">
+                    </div>
+                    <div class="grid-item">
+                        <img src="images/5.png" alt="LVT Elektrik Otomasyon - Test 5">
+                    </div>
+                    <div class="grid-item">
+                        <img src="images/6.jpg" alt="LVT Elektrik Otomasyon - Test 6">
+                    </div>
+                </div>
+            </div>
+            
+            <script>
+            // Tüm fotoğraflarla slider scripti
+            let allImages = [
+                // Mevcut fotoğraflar
+                '1.png', '2.png', '3.jpg', '4.jpg', '5.png', '6.jpg', '7.jpg', '8.jpg', '9.jpg',
+                // a-l fotoğrafları
+                'a.jpg', 'b.jpg', 'c.jpg', 'd.jpg', 'e.jpg', 'f.jpg', 'g.jpg', 'h.jpg', 'k.jpg', 'l.jpg',
+                // 11-18 fotoğrafları
+                '11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg', '16.jpg', '17.jpg', '18.jpg'
+            ];
+            
+            // 6'lı gruplar oluştur
+            let imageGroups = [];
+            for (let i = 0; i < allImages.length; i += 6) {
+                imageGroups.push(allImages.slice(i, i + 6));
+            }
+            
+            console.log('Toplam fotoğraf:', allImages.length);
+            console.log('Toplam grup:', imageGroups.length);
+            console.log('Gruplar:', imageGroups);
+            
+            let currentGroupIndex = 0;
+            
+            function updateSlider() {
+                const grid = document.getElementById('testGrid');
+                const currentGroup = imageGroups[currentGroupIndex];
+                
+                if (grid && currentGroup) {
+                    const items = grid.querySelectorAll('.grid-item');
+                    console.log('Yumuşak geçiş - Grup:', currentGroupIndex, currentGroup);
+                    
+                    // Fade out efekti
+                    items.forEach(item => {
+                        item.style.opacity = '0.3';
+                        item.style.transform = 'scale(0.95)';
+                    });
+                    
+                    // Kısa gecikme sonrası fotoğrafları değiştir ve fade in
+                    setTimeout(() => {
+                        items.forEach((item, index) => {
+                            const img = item.querySelector('img');
+                            if (currentGroup[index] && img) {
+                                img.src = `images/${currentGroup[index]}`;
+                                img.alt = `LVT Elektrik Otomasyon - ${currentGroup[index]}`;
+                            }
+                        });
+                        
+                        // Fade in efekti
+                        setTimeout(() => {
+                            items.forEach(item => {
+                                item.style.opacity = '1';
+                                item.style.transform = 'scale(1)';
+                            });
+                        }, 100);
+                    }, 300);
+                }
+                
+                // Sonraki gruba geç
+                currentGroupIndex = (currentGroupIndex + 1) % imageGroups.length;
+            }
+            
+            // İlk grubu göster
+            updateSlider();
+            
+            // Her 2 saniyede yumuşak geçiş
+            console.log('Starting slider with 2 second soft transition');
+            setInterval(() => {
+                console.log('2 seconds passed, soft transition...');
+                updateSlider();
+            }, 2000);
+            </script>
+                
+                <!-- Slider Controls -->
+                <div class="slider-controls">
+                    <button class="play-pause-btn" id="playPauseBtn">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <div class="slider-dots" id="sliderDots">
+                        <!-- Dots will be dynamically generated -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        <span class="highlight">LVT - EOM</span><br>
+                        Geleceğin Teknolojisi
+                    </h1>
+                    <p class="hero-description">
+                        Elektrik, Otomasyon, SCADA sistemleri ve enerji santrali çözümlerinde
+                        uzman kadromuzla endüstriyel projelerde teknoloji lideri. Yapay zeka destekli çözümler ve
+                        IoT entegrasyonu ile geleceği bugünden inşa ediyoruz.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#services" class="btn btn-primary">
+                            <i class="fas fa-cogs"></i> Hizmetlerimiz
+                        </a>
+                        <a href="#contact" class="btn btn-secondary">
+                            <i class="fas fa-paper-plane"></i> İletişime Geç
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">10+</span>
+                        <span class="stat-label">Yıllık Deneyim</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">60+</span>
+                        <span class="stat-label">Akıllı Çözüm</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">60+</span>
+                        <span class="stat-label">Memnun Müşteri</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">99%</span>
+                        <span class="stat-label">Başarı Oranı</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <!-- Additional Tech Elements -->
+            <div class="tech-particles">
+                <div class="particle particle-1"></div>
+                <div class="particle particle-2"></div>
+                <div class="particle particle-3"></div>
+                <div class="particle particle-4"></div>
+                <div class="particle particle-5"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Kurumsal</span>
+                <h2 class="section-title">LVT Elektrik Otomasyon Makine Hakkında</h2>
+                <p class="section-description">
+                    Elektrik, otomasyon ve endüstriyel çözümler alanında uzman kadromuzla
+                    sektörde öncü konumda yer almaktayız
+                </p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <div class="about-item">
+                        <div class="about-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="about-info">
+                            <h4>Elektrik Sistemleri</h4>
+                            <p>Yüksek ve alçak gerilim sistemleri, dağıtım panoları ve elektrik montaj işlerinde uzman
+                                hizmet</p>
+                        </div>
+                    </div>
+                    <div class="about-item">
+                        <div class="about-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <div class="about-info">
+                            <h4>Otomasyon Çözümleri</h4>
+                            <p>PLC, SCADA sistemleri ve endüstriyel otomasyon çözümleri ile üretim verimliliğinizi
+                                artırın</p>
+                        </div>
+                    </div>
+                    <div class="about-item">
+                        <div class="about-icon">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <div class="about-info">
+                            <h4>Hidroelektrik Santrali</h4>
+                            <p>Türbin ve generatör bakımları, yeni nesil hidrolik governor ve jeneratör uyartım
+                                sistemleri ile
+                                enerji santrallerinizin performansını optimize edin
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-industry"></i>
+                        <p>Endüstriyel Çözümler</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services section-padding bg-light">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Çözümlerimiz</span>
+                <h2 class="section-title">Hizmetlerimiz</h2>
+                <p class="section-description">
+                    Elektrik, otomasyon ve endüstriyel sistemler alanında kapsamlı çözümler sunuyoruz
+                </p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="service-title">Otomasyon Sistemleri</h3>
+                    <p class="service-description">
+                        PLC programlama, SCADA sistemleri, endüstriyel otomasyon çözümleri ve süreç kontrol sistemleri
+                    </p>
+                    <ul class="service-features">
+                        <li>PLC/DCS Çözümleri</li>
+                        <li>SCADA Sistemleri</li>
+                        <li>IoT Sistemler</li>
+                        <li>Özel tasarımlar</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="service-title">Elektrik Sistemleri</h3>
+                    <p class="service-description">
+                        Yüksek ve alçak gerilim sistemleri, dağıtım panoları imalatı ve elektrik montaj hizmetleri
+                    </p>
+                    <ul class="service-features">
+                        <li>AC/DC Panolar</li>
+                        <li>UPS ve Redresör Sistemleri</li>
+                        <li>Senkronizasyon Sistemleri</li>
+                        <li>Elektrik Montaj Hizmetleri</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-water"></i>
+                    </div>
+                    <h3 class="service-title">Hidroelektrik Santrali</h3>
+                    <p class="service-description">
+                        Türbin ve generatör bakımları, hidrolik governor sistemleri ve jeneratör uyartım sistemleri
+                    </p>
+                    <ul class="service-features">
+                        <li>Türbin & Generatör Bakımı</li>
+                        <li>Hidrolik Governor Sistemleri</li>
+                        <li>Jeneratör Uyartım Sistemleri</li>
+                        <li>Revizyon ve Modernizasyon</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="service-title">Yazılım & SCADA</h3>
+                    <p class="service-description">
+                        Endüstriyel yazılım geliştirme, SCADA sistemleri ve süreç izleme çözümleri
+                    </p>
+                    <ul class="service-features">
+                        <li>WinCC & CitectSCADA & PlantSCADA</li>
+                        <li>Özel Yazılım Geliştirme</li>
+                        <li>Veri Toplama Sistemleri</li>
+                        <li>Raporlama Sistemleri</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="service-title">Danışmanlık & Müşavirlik</h3>
+                    <p class="service-description">
+                        Teknik danışmanlık, proje yönetimi ve mühendislik müşavirlik hizmetleri
+                    </p>
+                    <ul class="service-features">
+                        <li>Teknik Danışmanlık</li>
+                        <li>Proje Yönetimi</li>
+                        <li>Fizibilite Etüdleri</li>
+                        <li>Sistem Optimizasyonu</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3 class="service-title">Bakım & Servis</h3>
+                    <p class="service-description">
+                        Periyodik bakım, arıza giderme ve 7/24 teknik destek hizmetleri
+                    </p>
+                    <ul class="service-features">
+                        <li>Periyodik Bakım</li>
+                        <li>Arıza Giderme</li>
+                        <li>7/24 Teknik Destek</li>
+                        <li>Yedek Parça Temini</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalog Section -->
+    <section id="catalog" class="catalog section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Katalog</span>
+                <h2 class="section-title">LVT-EOM Kataloğu 2025</h2>
+                <p class="section-description">
+                    Elektrik, otomasyon ve endüstriyel çözümlerimizle ilgili detaylı bilgileri PDF kataloğumuzdan inceleyebilirsiniz
+                </p>
+            </div>
+            
+            <!-- Simple Catalog Button -->
+            <div class="catalog-button-container">
+                <div class="catalog-card">
+                    <div class="catalog-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="catalog-info">
+                        <h3>LVT-EOM Katalog 2025</h3>
+                        <p>Elektrik, otomasyon ve endüstriyel çözümlerimizle ilgili detaylı bilgileri katalogumuzdan inceleyebilirsiniz.</p>
+                        <div class="catalog-features">
+                            <span class="feature-tag"><i class="fas fa-bolt"></i> Elektrik Sistemleri</span>
+                            <span class="feature-tag"><i class="fas fa-cogs"></i> Otomasyon</span>
+                            <span class="feature-tag"><i class="fas fa-water"></i> Hidroelektrik</span>
+                            <span class="feature-tag"><i class="fas fa-laptop-code"></i> SCADA</span>
+                        </div>
+                    </div>
+                    <div class="catalog-actions">
+                        <a href="catalog/LVT-EOM.pdf" target="_blank" class="catalog-btn primary">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span>Kataloğu Görüntüle</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instagram Section -->
+    <section id="instagram" class="instagram section-padding bg-light">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Sosyal Medya</span>
+                <h2 class="section-title">Instagram'da Bizi Takip Edin</h2>
+                <p class="section-description">
+                    Projelerimiz ve çalışmalarımızı Instagram'da takip edin
+                </p>
+            </div>
+            
+            <div class="instagram-wrapper">
+                <!-- Instagram Profile Info -->
+                <div class="instagram-header">
+                    <div class="instagram-avatar">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <div class="instagram-info">
+                        <h3>@lvt_eom</h3>
+                        <p>LVT Elektrik Otomasyon - Projelerimiz ve güncel çalışmalarımız</p>
+                    </div>
+                    <a href="https://instagram.com/lvt_eom" target="_blank" class="instagram-btn">
+                        <i class="fab fa-instagram"></i> Takip Et
+                    </a>
+                </div>
+
+                <!-- Instagram Photos Grid -->
+                <div class="instagram-grid">
+                    <div class="instagram-item">
+                        <div class="instagram-photo">
+                            <img src="images/a.jpg" alt="LVT Projesi A" loading="lazy">
+                            <div class="instagram-overlay">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="instagram-item">
+                        <div class="instagram-photo">
+                            <img src="images/b.jpg" alt="LVT Projesi B" loading="lazy">
+                            <div class="instagram-overlay">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="instagram-item">
+                        <div class="instagram-photo">
+                            <img src="images/c.jpg" alt="LVT Projesi C" loading="lazy">
+                            <div class="instagram-overlay">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="instagram-item">
+                        <div class="instagram-photo">
+                            <img src="images/d.jpg" alt="LVT Projesi D" loading="lazy">
+                            <div class="instagram-overlay">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instagram CTA -->
+                <div class="instagram-footer">
+                    <a href="https://instagram.com/lvt_eom" target="_blank" class="btn btn-primary btn-instagram">
+                        <i class="fab fa-instagram"></i> Daha Fazla Gönderi İçin Takip Et
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section-padding bg-dark">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle text-primary">İletişim</span>
+                <h2 class="section-title text-white">Bizimle İletişime Geçin</h2>
+                <p class="section-description text-light">
+                    Projeleriniz için profesyonel çözümler ve teknik destek almak için bize ulaşın
+                </p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Adres</h4>
+                            <p>Ostim OSB mah. 100. Yıl Bulvarı<br>No:55 D-48 Yenimahalle/ANKARA</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Telefon</h4>
+                            <p>+90 535 640 7227<br>Pazartesi - Cumartesi: 08:00 - 19:00</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>E-posta</h4>
+                            <p>info@lvt-eom.com</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <input type="text" placeholder="Adınız Soyadınız" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="E-posta Adresiniz" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" placeholder="Telefon Numaranız">
+                    </div>
+                    <div class="form-group">
+                        <select required>
+                            <option value="">Hizmet Türü Seçin</option>
+                            <option value="automation">Otomasyon Sistemleri</option>
+                            <option value="electrical">Elektrik Sistemleri</option>
+                            <option value="hydroelectric">Hidroelektrik Santrali</option>
+                            <option value="software">Yazılım & SCADA</option>
+                            <option value="consulting">Danışmanlık</option>
+                            <option value="maintenance">Bakım & Servis</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Mesajınız" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Mesaj Gönder</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <div class="footer-logo-container">
+                            <img src="images/logo.png" alt="LVT Elektrik Otomasyon Logo" class="footer-logo">
+                            <div class="footer-brand-text">
+                                <h3>LVT<span class="text-primary"> EOM </span></h3>
+                            </div>
+                        </div>
+                        <p class="footer-description">
+                            LVT Elektrik Otomasyon Makine Sanayi ve Ticaret LTD ŞTİ olarak
+                            elektrik, otomasyon ve endüstriyel çözümler alanında hizmet vermekteyiz.
+                        </p>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Hizmetlerimiz</h4>
+                    <ul class="footer-links">
+                        <li><a href="#automation">Otomasyon Sistemleri</a></li>
+                        <li><a href="#electrical">Elektrik Sistemleri</a></li>
+                        <li><a href="#hydroelectric">Hidroelektrik Santrali</a></li>
+                        <li><a href="#software">Yazılım & SCADA</a></li>
+                        <li><a href="#catalog">Katalog</a></li>
+                        <li><a href="#consulting">Danışmanlık</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Kurumsal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">Hakkımızda</a></li>
+                        <li><a href="#contact">İletişim</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>İletişim</h4>
+                    <div class="footer-contact">
+                        <p><i class="fas fa-phone"></i> +90 535 640 7227</p>
+                        <p><i class="fas fa-envelope"></i> info@lvt-eom.com</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Ostim OSB mah. 100. Yıl Bulvarı No:55 D-48
+                            Yenimahalle/ANKARA</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 LVT Elektrik Otomasyon Makine Sanayi ve Ticaret LTD ŞTİ. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Magazine Modal -->
+    <div id="magazine-modal" class="magazine-modal">
+        <div class="magazine-modal-content">
+            <div class="magazine-modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-book-open"></i>
+                    <span>LVT-EOM Katalog 2025</span>
+                </div>
+                <div class="modal-controls">
+                    <button class="modal-btn" onclick="toggleFullscreen()">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <button class="modal-btn" onclick="downloadCatalog()">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="modal-btn close-btn" onclick="closeMagazine()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="magazine-viewer">
+                <div class="page-navigation">
+                    <button class="nav-btn prev-btn" onclick="previousPage()">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="page-counter">
+                        <span id="current-page">1</span> / <span id="total-pages">1</span>
+                    </div>
+                    <button class="nav-btn next-btn" onclick="nextPage()">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="pdf-container-modal">
+                    <iframe id="catalog-frame" 
+                            src="catalog/LVT-EOM.pdf#toolbar=1&navpanes=1&scrollbar=1" 
+                            class="catalog-iframe" 
+                            title="LVT-EOM Kataloğu">
+                        <div class="pdf-fallback">
+                            <div class="fallback-content">
+                                <i class="fas fa-file-pdf"></i>
+                                <h3>PDF Görüntüleyici Desteklenmiyor</h3>
+                                <p>Tarayıcınız PDF görüntülemeyi desteklemiyor.</p>
+                                <a href="catalog/LVT-EOM.pdf" target="_blank" class="btn btn-primary">
+                                    <i class="fas fa-external-link-alt"></i> Yeni Sekmede Aç
+                                </a>
+                            </div>
+                        </div>
+                    </iframe>
+                </div>
+                <div class="zoom-controls">
+                    <button class="zoom-btn" onclick="zoomOut()">
+                        <i class="fas fa-search-minus"></i>
+                    </button>
+                    <span class="zoom-level">100%</span>
+                    <button class="zoom-btn" onclick="zoomIn()">
+                        <i class="fas fa-search-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="magazine-modal-overlay" onclick="closeMagazine()"></div>
+    </div>
+
+    <script src="js/script.js?v=20241012-2"></script>
+</body>
+
+</html>
