@@ -4,11 +4,18 @@ LVT Elektrik Otomasyon Makine Sanayi ve Ticaret LTD ŞTİ için tasarlanmış mo
 
 ## 🚀 Özellikler
 
-- **Modern Tasarım**: Teknolojik ve profesyonel görünüm
-- **Responsive Design**: Tüm cihazlarda mükemmel görüntü
-- **Smooth Animations**: Etkileyici geçiş efektleri
-- **İnteraktif Elementler**: Kullanıcı dostu arayüz
-- **SEO Optimized**: Arama motorlarına uygun yapı
+### 💻 Modern Tasarım
+- **Cyberpunk Tema**: Cyan ve magenta renk paleti
+- **Responsive Design**: Tüm cihazlarda mükemmel görünüm
+- **Smooth Animations**: Profesyonel geçiş efektleri
+- **Matrix Rain Effect**: Arka plan teknolojik efektler
+
+### 📸 Gelişmiş Slider Sistemi
+- **6'lı Grid Layout**: Yan yana 6 fotoğraf
+- **27 Fotoğraf**: Tüm proje görselleri dahil (1-9, a-l, 11-18)
+- **2 Saniye Yumuşak Geçiş**: Fade ve scale efektleri
+- **Otomatik Döngü**: Kesintisiz proje sunumu
+- **Responsive Grid**: Desktop 6×1, Tablet 3×2, Mobile 2×3
 
 ## 🛠 Teknolojiler
 
