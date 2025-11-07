@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LVT Elektrik Otomasyon - Elektrik, Otomasyon, SCADA Sistemleri | İstanbul</title>
+    <title>LVT-EOM</title>
     <meta name="description"
         content="LVT Elektrik Otomasyon Makine Sanayi ve Ticaret Ltd. Şti. - Elektrik, otomasyon, SCADA, PLC sistemleri, hidroelektrik santral bakımı, yazılım danışmanlığı. 24+ yıllık deneyim ile İstanbul'da hizmetinizdeyiz.">
     <meta name="keywords" content="elektrik otomasyon, SCADA sistemleri, PLC programlama, hidroelektrik santral, hidrolik governor, jeneratör uyartım, elektrik mühendislik, otomasyon danışmanlık, yazılım geliştirme, endüstriyel otomasyon, İstanbul">
@@ -12,6 +12,11 @@
     <meta name="robots" content="index, follow">
     <meta name="googlebot" content="index, follow">
     <link rel="canonical" href="https://professional91-star.github.io/LVTEOM/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="shortcut icon" type="image/png" href="images/logo.png">
+    <link rel="apple-touch-icon" href="images/logo.png">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -58,6 +63,7 @@
                         <li><a href="#home" class="nav-link active">Ana Sayfa</a></li>
                         <li><a href="#about" class="nav-link">Hakkımızda</a></li>
                         <li><a href="#services" class="nav-link">Hizmetlerimiz</a></li>
+                        <li><a href="#catalog" class="nav-link">Katalog</a></li>
                         <li><a href="#instagram" class="nav-link">Instagram</a></li>
                         <li><a href="#contact" class="nav-link">İletişim</a></li>
                     </ul>
@@ -402,6 +408,37 @@
         </div>
     </section>
 
+    <!-- Catalog Section -->
+    <section id="catalog" class="catalog-section section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Ürün ve Hizmetler</span>
+                <h2 class="section-title">LVT-EOM Katalog 2025</h2>
+                <p class="section-description">
+                    Ürün ve hizmetlerimizi detaylı olarak incelemek için kataloğumuzu görüntüleyebilirsiniz
+                </p>
+            </div>
+
+            <div class="catalog-preview">
+                <div class="catalog-card">
+                    <div class="catalog-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3>Dijital Katalog</h3>
+                    <p>Ürün ve hizmetlerimizi detaylı olarak inceleyin</p>
+                    <div class="catalog-actions">
+                        <button class="btn btn-primary" onclick="openMagazine()">
+                            <i class="fas fa-eye"></i> Görüntüle
+                        </button>
+                        <button class="btn btn-secondary" onclick="downloadCatalog()">
+                            <i class="fas fa-download"></i> İndir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Instagram Section -->
     <section id="instagram" class="instagram section-padding bg-light">
         <div class="container">
@@ -696,6 +733,59 @@
         "Hidroelektrik Santral Bakımı",
         "Yazılım Danışmanlığı"
       ]
+    }
+    </script>
+
+    <script>
+    // Catalog Modal Functions - Inline for guaranteed availability
+    function openMagazine() {
+        console.log('openMagazine çağrıldı - PDF yeni sekmede açılıyor');
+        // PDF'i doğrudan yeni sekmede aç
+        window.open('catalog/LVT-EOM.pdf', '_blank');
+    }
+
+    function closeMagazine() {
+        console.log('closeMagazine çağrıldı');
+        const modal = document.getElementById('magazine-modal');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    function downloadCatalog() {
+        console.log('downloadCatalog çağrıldı');
+        const link = document.createElement('a');
+        link.href = 'catalog/LVT-EOM.pdf';
+        link.download = 'LVT-EOM-Katalog-2025.pdf';
+        link.click();
+    }
+
+    function toggleFullscreen() {
+        const modal = document.getElementById('magazine-modal');
+        if (!document.fullscreenElement) {
+            modal.requestFullscreen().catch(err => {
+                console.log('Fullscreen error:', err);
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    }
+
+    function previousPage() {
+        console.log('Previous page');
+    }
+
+    function nextPage() {
+        console.log('Next page');
+    }
+
+    function zoomIn() {
+        console.log('Zoom in');
+    }
+
+    function zoomOut() {
+        console.log('Zoom out');
     }
     </script>
 

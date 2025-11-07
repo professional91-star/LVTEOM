@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Test</title>
+    <style>
+        .test-btn {
+            padding: 20px;
+            font-size: 18px;
+            margin: 20px;
+            cursor: pointer;
+        }
+        .magazine-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            display: none;
+        }
+        .magazine-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            width: 90%;
+            height: 90%;
+            background: white;
+            position: relative;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background: red;
+            color: white;
+            border: none;
+            z-index: 10000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Katalog Test Sayfası</h1>
+    <button class="test-btn" onclick="testOpen()">Kataloğu Aç</button>
+    <button class="test-btn" onclick="testDownload()">Kataloğu İndir</button>
+    
+    <div id="test-modal" class="magazine-modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="testClose()">Kapat</button>
+            <iframe src="catalog/LVT-EOM.pdf" title="Test PDF"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function testOpen() {
+            console.log('Test Open çalıştı');
+            const modal = document.getElementById('test-modal');
+            if (modal) {
+                console.log('Modal bulundu');
+                modal.classList.add('active');
+            } else {
+                console.error('Modal bulunamadı!');
+            }
+        }
+
+        function testClose() {
+            console.log('Test Close çalıştı');
+            const modal = document.getElementById('test-modal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        function testDownload() {
+            console.log('Test Download çalıştı');
+            const link = document.createElement('a');
+            link.href = 'catalog/LVT-EOM.pdf';
+            link.download = 'LVT-EOM-Katalog-2025.pdf';
+            link.click();
+        }
+
+        // Sayfa yüklendiğinde
+        window.addEventListener('load', function() {
+            console.log('Sayfa yüklendi');
+            console.log('Modal element:', document.getElementById('test-modal'));
+        });
+    </script>
+</body>
+</html>

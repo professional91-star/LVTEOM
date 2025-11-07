@@ -1666,13 +1666,83 @@ function togglePDFFullscreen() {
 
 // Download catalog
 function downloadCatalog() {
+    console.log('downloadCatalog fonksiyonu çağrıldı');
     const link = document.createElement('a');
     link.href = 'catalog/LVT-EOM.pdf';
     link.download = 'LVT-EOM-Katalog-2025.pdf';
     link.click();
+    console.log('İndirme linki tıklandı');
     
     // Show download notification
-    showNotification('Katalog indiriliyor...', 'info');
+    if (typeof showNotification === 'function') {
+        showNotification('Katalog indiriliyor...', 'info');
+    }
+}
+
+// Open Magazine Modal
+function openMagazine() {
+    console.log('openMagazine fonksiyonu çağrıldı');
+    const modal = document.getElementById('magazine-modal');
+    console.log('Modal element:', modal);
+    if (modal) {
+        console.log('Modal bulundu, active class ekleniyor');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        console.log('Modal classList:', modal.classList);
+    } else {
+        console.error('Modal bulunamadı!');
+    }
+}
+
+// Close Magazine Modal
+function closeMagazine() {
+    const modal = document.getElementById('magazine-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Toggle Fullscreen
+function toggleFullscreen() {
+    const modal = document.getElementById('magazine-modal');
+    if (!document.fullscreenElement) {
+        modal.requestFullscreen().catch(err => {
+            console.log('Fullscreen error:', err);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+// PDF Navigation Functions
+function previousPage() {
+    const iframe = document.getElementById('catalog-frame');
+    if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage({ action: 'previousPage' }, '*');
+    }
+}
+
+function nextPage() {
+    const iframe = document.getElementById('catalog-frame');
+    if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage({ action: 'nextPage' }, '*');
+    }
+}
+
+// Zoom Functions
+function zoomIn() {
+    const iframe = document.getElementById('catalog-frame');
+    if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage({ action: 'zoomIn' }, '*');
+    }
+}
+
+function zoomOut() {
+    const iframe = document.getElementById('catalog-frame');
+    if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage({ action: 'zoomOut' }, '*');
+    }
 }
 
 // Magazine loading animation
