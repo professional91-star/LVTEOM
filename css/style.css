@@ -692,7 +692,7 @@ body::after {
 /* Modern Slider Styles */
 .image-slider {
     background: linear-gradient(135deg, #0a0e1a 0%, #1a1d2e 50%, #0f1419 100%);
-    padding: 40px 0;
+    padding: 50px 0;
     position: relative;
     overflow: hidden;
 }
@@ -745,7 +745,7 @@ body::after {
 /* Slider Wrapper */
 .slider-wrapper {
     position: relative;
-    padding: 15px;
+    padding: 20px;
     background: rgba(15, 23, 42, 0.5);
     border-radius: 15px;
     border: 1px solid rgba(0, 255, 255, 0.1);
@@ -756,7 +756,7 @@ body::after {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
-    min-height: 280px;
+    min-height: 270px;
 }
 
 /* Grid Items */
@@ -768,6 +768,7 @@ body::after {
     border: 2px solid rgba(0, 255, 255, 0.2);
     transition: all 0.4s ease;
     aspect-ratio: 4/3;
+    height: 250px;
 }
 
 .grid-item:hover {
