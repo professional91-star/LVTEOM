@@ -793,18 +793,20 @@ body::after {
 
 @media (max-width: 480px) {
     .image-grid-slider {
-        height: 250px;
+        height: 450px;
         padding: 8px;
+        overflow: visible;
     }
     
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
-        height: 200px;
-        gap: 5px;
+        height: 420px;
+        gap: 8px;
     }
     
     .grid-item {
         height: 200px;
+        border-radius: 8px;
     }
 }
 

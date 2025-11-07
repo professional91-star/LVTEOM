@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://professional91-star.github.io/LVTEOM/sitemap.xml
