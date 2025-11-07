@@ -13,10 +13,16 @@
     <meta name="googlebot" content="index, follow">
     <link rel="canonical" href="https://professional91-star.github.io/LVTEOM/">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="images/logo.png">
-    <link rel="shortcut icon" type="image/png" href="images/logo.png">
+    <!-- Favicon - Multiple formats for better compatibility -->
+    <link rel="icon" type="image/x-icon" href="images/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/logo.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/logo.png">
+    <link rel="shortcut icon" href="images/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/logo.png">
     <link rel="apple-touch-icon" href="images/logo.png">
+    <meta name="msapplication-TileImage" content="https://professional91-star.github.io/LVTEOM/images/logo.png">
+    <meta name="msapplication-TileColor" content="#00ffff">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -75,118 +81,218 @@
         </nav>
     </header>
 
-    <!-- Image Slider Gallery - Rebuilt -->
+    <!-- Image Slider Gallery - Modern Design -->
     <section class="image-slider">
-        <div class="slider-wrapper">
-            <!-- Navigation Buttons -->
-            <!-- Basit Test Slider -->
-            <div class="image-grid-slider">
-                <div class="grid-container active" id="testGrid">
-                    <div class="grid-item">
-                        <img src="images/1.png" alt="LVT Elektrik Otomasyon - Test 1">
-                    </div>
-                    <div class="grid-item">
-                        <img src="images/2.png" alt="LVT Elektrik Otomasyon - Test 2">
-                    </div>
-                    <div class="grid-item">
-                        <img src="images/3.jpg" alt="LVT Elektrik Otomasyon - Test 3">
-                    </div>
-                    <div class="grid-item">
-                        <img src="images/4.jpg" alt="LVT Elektrik Otomasyon - Test 4">
-                    </div>
-                    <div class="grid-item">
-                        <img src="images/5.png" alt="LVT Elektrik Otomasyon - Test 5">
-                    </div>
-                    <div class="grid-item">
-                        <img src="images/6.jpg" alt="LVT Elektrik Otomasyon - Test 6">
-                    </div>
-                </div>
+        <div class="slider-container">
+            <div class="slider-header">
+                <h2 class="slider-title">
+                    <i class="fas fa-images"></i>
+                    Projelerimizden Görüntüler
+                </h2>
             </div>
             
-            <script>
-            // Tüm fotoğraflarla slider scripti
-            let allImages = [
-                // Mevcut fotoğraflar
-                '1.png', '2.png', '3.jpg', '4.jpg', '5.png', '6.jpg', '7.jpg', '8.jpg', '9.jpg',
-                // a-l fotoğrafları
-                'a.jpg', 'b.jpg', 'c.jpg', 'd.jpg', 'e.jpg', 'f.jpg', 'g.jpg', 'h.jpg', 'k.jpg', 'l.jpg',
-                // 11-18 fotoğrafları
-                '11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg', '16.jpg', '17.jpg', '18.jpg'
-            ];
-            
-            // 6'lı gruplar oluştur
-            let imageGroups = [];
-            for (let i = 0; i < allImages.length; i += 6) {
-                imageGroups.push(allImages.slice(i, i + 6));
-            }
-            
-            console.log('Toplam fotoğraf:', allImages.length);
-            console.log('Toplam grup:', imageGroups.length);
-            console.log('Gruplar:', imageGroups);
-            
-            let currentGroupIndex = 0;
-            
-            function updateSlider() {
-                const grid = document.getElementById('testGrid');
-                const currentGroup = imageGroups[currentGroupIndex];
+            <div class="slider-wrapper">
+                <div class="image-grid-slider" id="imageGridSlider">
+                    <!-- Grid items will be dynamically generated -->
+                </div>
                 
-                if (grid && currentGroup) {
-                    const items = grid.querySelectorAll('.grid-item');
-                    console.log('Yumuşak geçiş - Grup:', currentGroupIndex, currentGroup);
-                    
-                    // Fade out efekti
-                    items.forEach(item => {
-                        item.style.opacity = '0.3';
-                        item.style.transform = 'scale(0.95)';
-                    });
-                    
-                    // Kısa gecikme sonrası fotoğrafları değiştir ve fade in
-                    setTimeout(() => {
-                        items.forEach((item, index) => {
-                            const img = item.querySelector('img');
-                            if (currentGroup[index] && img) {
-                                img.src = `images/${currentGroup[index]}`;
-                                img.alt = `LVT Elektrik Otomasyon - ${currentGroup[index]}`;
-                            }
-                        });
-                        
-                        // Fade in efekti
-                        setTimeout(() => {
-                            items.forEach(item => {
-                                item.style.opacity = '1';
-                                item.style.transform = 'scale(1)';
-                            });
-                        }, 100);
-                    }, 300);
-                }
-                
-                // Sonraki gruba geç
-                currentGroupIndex = (currentGroupIndex + 1) % imageGroups.length;
-            }
+                <div class="slider-overlay-left"></div>
+                <div class="slider-overlay-right"></div>
+            </div>
             
-            // İlk grubu göster
-            updateSlider();
-            
-            // Her 2 saniyede yumuşak geçiş
-            console.log('Starting slider with 2 second soft transition');
-            setInterval(() => {
-                console.log('2 seconds passed, soft transition...');
-                updateSlider();
-            }, 2000);
-            </script>
-                
-                <!-- Slider Controls -->
-                <div class="slider-controls">
-                    <button class="play-pause-btn" id="playPauseBtn">
-                        <i class="fas fa-pause"></i>
-                    </button>
-                    <div class="slider-dots" id="sliderDots">
-                        <!-- Dots will be dynamically generated -->
-                    </div>
+            <div class="slider-footer">
+                <div class="slider-progress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="slider-indicators" id="sliderIndicators">
+                    <!-- Indicators will be dynamically generated -->
                 </div>
             </div>
         </div>
     </section>
+    
+    <script>
+    // Modern Slider Configuration
+    const sliderConfig = {
+        images: [
+            '1.png', '2.png', '3.jpg', '4.jpg', '5.png', '6.jpg', 
+            '7.jpg', '8.jpg', '9.jpg', 'a.jpg', 'b.jpg', 'c.jpg', 
+            'd.jpg', 'e.jpg', 'f.jpg', 'g.jpg', 'h.jpg', 'k.jpg', 
+            'l.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg', 
+            '16.jpg', '17.jpg', '18.jpg'
+        ],
+        itemsPerGroup: 3,
+        transitionDuration: 3500,
+        animationSpeed: 400
+    };
+
+    class ModernSlider {
+        constructor(config) {
+            this.images = config.images;
+            this.itemsPerGroup = config.itemsPerGroup;
+            this.transitionDuration = config.transitionDuration;
+            this.animationSpeed = config.animationSpeed;
+            
+            this.groups = this.createGroups();
+            this.currentIndex = 0;
+            this.isPlaying = true;
+            this.interval = null;
+            
+            this.init();
+        }
+        
+        createGroups() {
+            const groups = [];
+            for (let i = 0; i < this.images.length; i += this.itemsPerGroup) {
+                groups.push(this.images.slice(i, i + this.itemsPerGroup));
+            }
+            return groups;
+        }
+        
+        init() {
+            this.renderGrid();
+            this.renderIndicators();
+            this.attachEventListeners();
+            this.start();
+            this.updateDisplay();
+        }
+        
+        renderGrid() {
+            const grid = document.getElementById('imageGridSlider');
+            grid.innerHTML = '';
+            
+            const currentGroup = this.groups[this.currentIndex];
+            currentGroup.forEach((image, index) => {
+                const item = document.createElement('div');
+                item.className = 'grid-item';
+                item.style.animationDelay = `${index * 0.1}s`;
+                
+                const img = document.createElement('img');
+                img.src = `images/${image}`;
+                img.alt = `LVT Elektrik Otomasyon - Proje ${index + 1}`;
+                img.loading = 'lazy';
+                
+                item.appendChild(img);
+                grid.appendChild(item);
+            });
+        }
+        
+        renderIndicators() {
+            const container = document.getElementById('sliderIndicators');
+            container.innerHTML = '';
+            
+            this.groups.forEach((_, index) => {
+                const indicator = document.createElement('button');
+                indicator.className = 'indicator-dot';
+                indicator.setAttribute('aria-label', `Grup ${index + 1}`);
+                if (index === this.currentIndex) {
+                    indicator.classList.add('active');
+                }
+                indicator.addEventListener('click', () => this.goToSlide(index));
+                container.appendChild(indicator);
+            });
+        }
+        
+        attachEventListeners() {
+            // Auto-play only, no manual controls
+        }
+        
+        updateDisplay() {
+            // Animate grid items
+            const items = document.querySelectorAll('.grid-item');
+            items.forEach((item, index) => {
+                item.style.animation = 'none';
+                setTimeout(() => {
+                    item.style.animation = `slideInUp ${this.animationSpeed}ms ease-out ${index * 0.1}s both`;
+                }, 10);
+            });
+            
+            // Update indicators
+            document.querySelectorAll('.indicator-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === this.currentIndex);
+            });
+            
+            // Update progress bar
+            this.updateProgressBar();
+        }
+        
+        updateProgressBar() {
+            const progressBar = document.getElementById('progressBar');
+            if (progressBar) {
+                progressBar.style.transition = 'none';
+                progressBar.style.width = '0%';
+                
+                setTimeout(() => {
+                    progressBar.style.transition = `width ${this.transitionDuration}ms linear`;
+                    progressBar.style.width = this.isPlaying ? '100%' : '0%';
+                }, 50);
+            }
+        }
+        
+        start() {
+            if (this.interval) return;
+            this.isPlaying = true;
+            this.updateProgressBar();
+            this.interval = setInterval(() => this.next(), this.transitionDuration);
+        }
+        
+        stop() {
+            if (this.interval) {
+                clearInterval(this.interval);
+                this.interval = null;
+            }
+            this.isPlaying = false;
+            this.updateProgressBar();
+        }
+        
+        togglePlayPause() {
+            const btn = document.getElementById('playPauseBtn');
+            const icon = btn?.querySelector('i');
+            
+            if (this.isPlaying) {
+                this.stop();
+                if (icon) {
+                    icon.className = 'fas fa-play';
+                }
+            } else {
+                this.start();
+                if (icon) {
+                    icon.className = 'fas fa-pause';
+                }
+            }
+        }
+        
+        next() {
+            this.currentIndex = (this.currentIndex + 1) % this.groups.length;
+            this.renderGrid();
+            this.updateDisplay();
+        }
+        
+        prev() {
+            this.currentIndex = (this.currentIndex - 1 + this.groups.length) % this.groups.length;
+            this.renderGrid();
+            this.updateDisplay();
+        }
+        
+        goToSlide(index) {
+            if (index === this.currentIndex) return;
+            this.currentIndex = index;
+            this.renderGrid();
+            this.updateDisplay();
+            
+            // Restart autoplay
+            if (this.isPlaying) {
+                this.stop();
+                this.start();
+            }
+        }
+    }
+    
+    // Initialize slider when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+        new ModernSlider(sliderConfig);
+    });
+    </script>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
